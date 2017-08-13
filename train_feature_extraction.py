@@ -1,7 +1,9 @@
 import pickle
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
+from sklearn.utils import shuffle
 from alexnet import AlexNet
+import time
 nb_classes = 43
 epochs = 10
 batch_size = 128
@@ -76,9 +78,9 @@ with tf.Session() as sess:
         print("Validation Accuracy =", val_acc)
         print("")
 
-Most of the code should look familiar.
+## Most of the code should look familiar.
 
-cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(logits, labels)
+cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=labels)
 loss_op = tf.reduce_mean(cross_entropy)
 opt = tf.train.AdamOptimizer()
 train_op = opt.minimize(loss_op, var_list=[fc8W, fc8b])
@@ -87,7 +89,7 @@ init_op = tf.initialize_all_variables()
 preds = tf.arg_max(logits, 1)
 accuracy_op = tf.reduce_mean(tf.cast(tf.equal(preds, labels), tf.float32))
 
-Operations are defined here (training, loss, accuracy, etc); eval_on_data is a utility function to calculate the loss and accuracy over a dataset to evaluate all at once.
+## Operations are defined here (training, loss, accuracy, etc); eval_on_data is a utility function to calculate the loss and accuracy over a dataset to evaluate all at once.
 
 with tf.Session() as sess:
     sess.run(init_op)
